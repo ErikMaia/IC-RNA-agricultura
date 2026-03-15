@@ -19,11 +19,9 @@ Com a conclusão deste estudo, espera-se:
     <li>
         Mapeamento de Variabilidade: Gerar mapas de calor que representem fielmente a distribuição espacial dos nutrientes ou atributos do solo na área estudada.
     </li>
-
     <li>
         Desempenho Preditivo: Avaliar se a Rede Neural Artificial (RNA) consegue superar a Krigagem em cenários de alta complexidade e não-linearidade dos dados.
     </li>
-
     <li>
         Análise de Erro: Identificar qual algoritmo apresenta o menor RMSE (Raiz do Erro Quadrático Médio), indicando maior precisão para a tomada de decisão no campo.
     </li>
@@ -36,10 +34,5 @@ Com a conclusão deste estudo, espera-se:
 
 ## Instalação das dependencias
 
-<code>
-    # Atualize o gerenciador de pacotes
-    pip install --upgrade pip
-
-    # Instale as dependências principais
-    pip install pandas seaborn matplotlib pykrige tensorflow
-</code>
+<code>pip install --upgrade pip</code>
+<code>pip install pandas seaborn matplotlib pykrige tensorflow</code>
