@@ -15,24 +15,24 @@ Como objetivos especificos desta analise:
 
 ## Resultados esperados
 Com a conclusão deste estudo, espera-se:
-<li>
-    <ul>
+<ol>
+    <li>
         Mapeamento de Variabilidade: Gerar mapas de calor que representem fielmente a distribuição espacial dos nutrientes ou atributos do solo na área estudada.
-    </ul>
+    </li>
 
-    <ul>
+    <li>
         Desempenho Preditivo: Avaliar se a Rede Neural Artificial (RNA) consegue superar a Krigagem em cenários de alta complexidade e não-linearidade dos dados.
-    </ul>
+    </li>
 
-    <ul>
+    <li>
         Análise de Erro: Identificar qual algoritmo apresenta o menor RMSE (Raiz do Erro Quadrático Médio), indicando maior precisão para a tomada de decisão no campo.
-    </ul>
+    </li>
 
-    <ul>
+    <li>
         Eficiência Computacional: Comparar o tempo de processamento e a facilidade de ajuste de hiperparâmetros entre as duas abordagens.
-    </ul>
+    </li>
 
-</li>
+</ol>
 
 ## Instalação das dependencias
 
