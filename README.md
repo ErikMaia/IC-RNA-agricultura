@@ -25,7 +25,6 @@ Com a conclusão deste estudo, espera-se:
     <li>
         Análise de Erro: Identificar qual algoritmo apresenta o menor RMSE (Raiz do Erro Quadrático Médio), indicando maior precisão para a tomada de decisão no campo.
     </li>
-
     <li>
         Eficiência Computacional: Comparar o tempo de processamento e a facilidade de ajuste de hiperparâmetros entre as duas abordagens.
     </li>
@@ -34,5 +33,5 @@ Com a conclusão deste estudo, espera-se:
 
 ## Instalação das dependencias
 
-<code>pip install --upgrade pip</code>
+<code>pip install --upgrade pip</code><br>
 <code>pip install pandas seaborn matplotlib pykrige tensorflow</code>
