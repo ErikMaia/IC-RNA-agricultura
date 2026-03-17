@@ -34,4 +34,4 @@ Com a conclusão deste estudo, espera-se:
 ## Instalação das dependencias
 
 <code>pip install --upgrade pip</code><br>
-<code>pip install pandas seaborn matplotlib pykrige tensorflow</code>
+<code>pip install pandas seaborn matplotlib pykrige keras scikit-learn</code>
