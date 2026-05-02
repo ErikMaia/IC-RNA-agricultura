@@ -6,7 +6,12 @@ Este projeto investiga metodos de interpolacao espacial para Agricultura de Prec
 - Rede Neural Artificial (Keras/TensorFlow)
 - SVR (em etapa adicional no notebook)
 
-O experimento principal esta concentrado no notebook [main.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/main.ipynb).
+Os experimentos agora estao divididos em notebooks por metodo:
+- [krigagem.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/krigagem.ipynb)
+- [mlp.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/mlp.ipynb)
+- [svr.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/svr.ipynb)
+
+O [main.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/main.ipynb) permanece como historico/legado.
 
 ## Objetivo de Pesquisa
 Comparar desempenho de modelos na predicao espacial de atributos de campo (inicialmente altitude), usando metricas como:
@@ -18,7 +23,10 @@ Comparar desempenho de modelos na predicao espacial de atributos de campo (inici
 ## Estrutura do Repositorio
 - [README.md](C:/Users/Erik/Projetos/IC-RNA-agricultura/README.md): descricao geral do estudo e dependencias.
 - `data/`: CSVs de entrada.
-- [main.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/main.ipynb): pipeline principal (importacao, preprocessamento, treino e testes).
+- [krigagem.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/krigagem.ipynb): fluxo de krigagem.
+- [mlp.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/mlp.ipynb): fluxo de MLP (RNA).
+- [svr.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/svr.ipynb): fluxo de SVR.
+- [main.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/main.ipynb): notebook original consolidado.
 - `models/`: pasta prevista para persistencia dos modelos (atualmente sem arquivos).
 
 ## Dados Disponiveis
@@ -36,13 +44,12 @@ Observacao importante:
 - O arquivo de limites parece estar em UTM (valores grandes positivos).
 - Antes de analises espaciais finais, confirmar se todos os dados estao no mesmo sistema de referencia.
 
-## Fluxo Atual no Notebook (`src/main.ipynb`)
-Sequencia geral identificada:
-1. Importacao de bibliotecas (`pandas`, `numpy`, `matplotlib`, `seaborn`, `sklearn`, `keras`, `pykrige`).
-2. Configuracao e leitura dos dados de altitude.
-3. Blocos de treinamento para Krigagem e RNA.
-4. Funcoes de teste por conjunto de altitude (`altitude[0]`, `altitude[1]`, `altitude[2]`).
-5. Bloco final de SVR.
+## Fluxo Atual
+Sequencia recomendada:
+1. Executar `src/krigagem.ipynb` para resultados de krigagem.
+2. Executar `src/mlp.ipynb` para resultados de MLP.
+3. Executar `src/svr.ipynb` para resultados de SVR.
+4. Consolidar metricas em tabela unica.
 
 Sinais no notebook:
 - Aviso de TensorFlow sobre indisponibilidade de GPU nativa no Windows para versoes recentes.
@@ -70,7 +77,10 @@ Modulo auxiliar local:
 ## Como Rodar Rapido
 1. Ativar ambiente virtual (`.venv`).
 2. Instalar dependencias.
-3. Executar [main.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/main.ipynb) em ordem de celulas.
+3. Executar os notebooks por metodo:
+   - [krigagem.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/krigagem.ipynb)
+   - [mlp.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/mlp.ipynb)
+   - [svr.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/svr.ipynb)
 
 ## Pendencias Tecnicas Recomendadas
 1. Padronizar encoding de textos (`README.md` mostra caracteres acentuados quebrados).
@@ -84,7 +94,7 @@ Modulo auxiliar local:
 Se voce (IA) for continuar este trabalho, siga esta ordem:
 1. Ler [README.md](C:/Users/Erik/Projetos/IC-RNA-agricultura/README.md) e este arquivo.
 2. Inspecionar colunas e CRS dos CSVs em `data/`.
-3. Executar [main.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/main.ipynb) por etapas e registrar metricas por modelo.
+3. Executar [krigagem.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/krigagem.ipynb), [mlp.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/mlp.ipynb) e [svr.ipynb](C:/Users/Erik/Projetos/IC-RNA-agricultura/src/svr.ipynb), registrando metricas por modelo.
 4. Calcular IDE/ISI dos parametros de variograma com `src/spatial_metrics.py`.
 5. Corrigir warnings de entrada no SVR (manter nomes de features consistentes entre treino e predicao).
 6. Exportar resultados finais em formato tabular (CSV/Markdown) para comparacao objetiva.

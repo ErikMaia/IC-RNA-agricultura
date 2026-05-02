@@ -60,12 +60,19 @@ IC-RNA-agricultura/
 |- data/
 |- models/
 |- src/
-|  `- main.ipynb
+|  |- main.ipynb
+|  |- krigagem.ipynb
+|  |- mlp.ipynb
+|  |- svr.ipynb
+|  `- spatial_metrics.py
 |- AI_CONTEXT.md
 `- README.md
 ```
 
-- `src/main.ipynb`: pipeline principal de leitura, preparo, treino e testes.
+- `src/main.ipynb`: notebook historico/original com o fluxo completo.
+- `src/krigagem.ipynb`: funcoes e execucao da krigagem.
+- `src/mlp.ipynb`: funcoes e execucao da MLP (RNA).
+- `src/svr.ipynb`: funcoes e execucao da SVR.
 - `src/spatial_metrics.py`: funcoes para calcular IDE/ISI a partir de parametros do variograma.
 - `data/`: dados de entrada em CSV.
 - `models/`: pasta reservada para modelos/artefatos salvos.
@@ -103,9 +110,9 @@ pip install pandas numpy seaborn matplotlib pykrige keras tensorflow scikit-lear
 ## Como executar
 
 1. Ative o ambiente virtual (recomendado).
-2. Abra o notebook `src/main.ipynb`.
-3. Execute as celulas em ordem, do inicio ao fim.
-4. Registre os resultados de cada modelo para comparacao.
+2. Abra o notebook do metodo desejado em `src/` (`krigagem.ipynb`, `mlp.ipynb` ou `svr.ipynb`).
+3. Execute as celulas em ordem.
+4. Registre os resultados de cada metodo para comparacao.
 
 ## Status do projeto
 
