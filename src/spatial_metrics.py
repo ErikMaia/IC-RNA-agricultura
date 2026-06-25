@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from typing import Any, Dict, Mapping, Sequence, Tuple
 
+import numpy as np
+
 
 def ide_isi_from_variances(nugget: float, structured_variance: float) -> Dict[str, float | str]:
     """Calcula IDE/ISI a partir de C0 (nugget) e C1 (variancia estruturada).
@@ -81,11 +83,16 @@ def extract_nugget_structured_from_pykrige(params: Mapping[str, Any] | Sequence[
             return nugget, structured
         raise ValueError("Dict de variograma sem `psill` ou `sill`.")
 
-    if not isinstance(params, Sequence) or len(params) < 3:
+    try:
+        values = list(params)
+    except TypeError as exc:
+        raise ValueError("Esperado dict ou sequencia com pelo menos 3 elementos.") from exc
+
+    if len(values) < 3:
         raise ValueError("Esperado dict ou sequencia com pelo menos 3 elementos.")
 
-    first = float(params[0])  # sill total ou psill
-    nugget = float(params[2])
+    first = float(values[0])  # sill total ou psill
+    nugget = float(values[2])
 
     structured = first - nugget
     if structured < 0:
@@ -105,4 +112,49 @@ def ide_isi_from_pykrige(params: Mapping[str, Any] | Sequence[float]) -> Dict[st
     result = ide_isi_from_variances(nugget=nugget, structured_variance=structured)
     result["nugget"] = nugget
     result["structured_variance"] = structured
+    return result
+
+
+def ide_isi_from_prediction_points(
+    points: Any,
+    variogram_model: str = "exponential",
+    max_points: int = 1000,
+    random_state: int = 42,
+) -> Dict[str, float | str]:
+    """Estima IDE/ISI a partir de pontos previstos em colunas x, y, z.
+
+    A funcao ajusta um variograma com OrdinaryKriging sobre uma amostra dos
+    pontos previstos e calcula o ISI da superficie gerada pelo modelo.
+    """
+
+    from pykrige.ok import OrdinaryKriging
+
+    if max_points <= 0:
+        raise ValueError("max_points deve ser maior que zero.")
+
+    x = np.asarray(points["x"], dtype=float)
+    y = np.asarray(points["y"], dtype=float)
+    z = np.asarray(points["z"], dtype=float)
+    valid_mask = np.isfinite(x) & np.isfinite(y) & np.isfinite(z)
+    x, y, z = x[valid_mask], y[valid_mask], z[valid_mask]
+
+    if len(z) < 3:
+        raise ValueError("Sao necessarios pelo menos 3 pontos validos para estimar o variograma.")
+
+    if len(z) > max_points:
+        rng = np.random.default_rng(random_state)
+        sample_index = rng.choice(len(z), size=max_points, replace=False)
+        x, y, z = x[sample_index], y[sample_index], z[sample_index]
+
+    ok = OrdinaryKriging(
+        x=x,
+        y=y,
+        z=z,
+        variogram_model=variogram_model,
+        enable_plotting=False,
+        verbose=False,
+    )
+    result = ide_isi_from_pykrige(ok.variogram_model_parameters)
+    result["variogram_model"] = variogram_model
+    result["n_points_variogram"] = int(len(z))
     return result
