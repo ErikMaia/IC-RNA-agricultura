@@ -37,6 +37,7 @@ def ide_isi_from_variances(nugget: float, structured_variance: float) -> Dict[st
     return {
         "ide": ide,
         "isi": isi,
+        "ise": isi,
         "classe_ide": classify_ide(ide),
         "classe_isi": classify_isi(isi),
     }
