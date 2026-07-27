@@ -159,3 +159,57 @@ def ide_isi_from_prediction_points(
     result["variogram_model"] = variogram_model
     result["n_points_variogram"] = int(len(z))
     return result
+
+
+def kriging_mae(
+    points: Any,
+    variogram_model: str = "exponential",
+    variogram_parameters: Mapping[str, Any] | Sequence[float] | None = None,
+    n_splits: int = 5,
+    random_state: int = 42,
+) -> float:
+    """Calcula o MAE da krigagem por validacao cruzada em *n_splits* partes.
+
+    A validacao e feita separando os pontos de teste antes de executar o
+    ``OrdinaryKriging``. Assim, o erro nao e medido nos mesmos pontos usados
+    para ajustar o interpolador (o que produziria MAE artificialmente zero).
+    ``points`` deve conter as colunas/chaves ``x``, ``y`` e ``z``.
+    """
+
+    from pykrige.ok import OrdinaryKriging
+
+    if n_splits < 2:
+        raise ValueError("n_splits deve ser maior ou igual a 2.")
+
+    x = np.asarray(points["x"], dtype=float)
+    y = np.asarray(points["y"], dtype=float)
+    z = np.asarray(points["z"], dtype=float)
+    valid_mask = np.isfinite(x) & np.isfinite(y) & np.isfinite(z)
+    x, y, z = x[valid_mask], y[valid_mask], z[valid_mask]
+
+    if len(z) < n_splits or len(z) < 3:
+        raise ValueError("Sao necessarios pontos validos suficientes para a validacao cruzada.")
+
+    indices = np.arange(len(z))
+    np.random.default_rng(random_state).shuffle(indices)
+    fold_indices = np.array_split(indices, n_splits)
+    absolute_errors = []
+
+    for test_index in fold_indices:
+        train_index = np.setdiff1d(indices, test_index, assume_unique=True)
+        kwargs = {
+            "x": x[train_index],
+            "y": y[train_index],
+            "z": z[train_index],
+            "variogram_model": variogram_model,
+            "enable_plotting": False,
+            "verbose": False,
+        }
+        if variogram_parameters is not None:
+            kwargs["variogram_parameters"] = variogram_parameters
+
+        ok = OrdinaryKriging(**kwargs)
+        predictions, _ = ok.execute("points", x[test_index], y[test_index])
+        absolute_errors.extend(np.abs(z[test_index] - np.asarray(predictions, dtype=float)))
+
+    return float(np.mean(absolute_errors))
